@@ -8,7 +8,6 @@ block_section.appendChild(neu.content.cloneNode(true));
 
 const voten = document.getElementById('voten');
 const sieger = document.getElementById('sieger');
-const submitBtn = document.getElementById('submitBtn');
 
 nav.forEach((element) => {
 	return element.addEventListener('click', (e) => {
@@ -62,6 +61,7 @@ function validateAndUpload(file) {
 
 function changeButton() {
 	event.preventDefault();
+	const submitBtn = document.getElementById('submitBtn');
 	if (
 		event.target.value != '' &&
 		validateAndUpload(event.srcElement.files[0])
@@ -145,6 +145,7 @@ function loadCards() {
 		const data = await response.json();
 		return data;
 	}
+
 	request().then((res) => {
 		console.log(res);
 		res.forEach((card) => {
