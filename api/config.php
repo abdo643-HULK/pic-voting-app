@@ -12,38 +12,52 @@ if ($con->connect_error) {
     die("Connection failed: " . $error);
 }
 
-$db = mysql_select_db($dbname);
+$db = mysqli_select_db($con, $dbname);
 
-if(empty($db)){
-    $dbcr = "CREATE DATABASE " + $dbname;
-    $check = mysql_query($dbcr);
-    if(!$check){
-        echo "database creation error";
-    }
-    else{
+if (empty($db)) {
+    $dbcr = "CREATE DATABASE voting";
+    $check = mysqli_query($con, $dbcr);
+    if (!$check) {
+        echo "database creation error <br/>";
+    } else {
         echo "database created";
+        $table = "SELECT * FROM election";
+        $chacktable = mysqli_query($con, $table);
+        if (!$chacktable) {
+            $createTable = "CREATE TABLE election(
+                id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                img varchar(255) NOT NULL,
+                text varchar(255) NOT NULL,
+                votes INT(10) NOT NULL,
+                )";
+            $ok = mysqli_query($con, $createTable);
+            if (!$ok) {
+                echo "table creation error ";
+            } else {
+                echo "table created ";
+            }
+        } else {
+            echo "table exist ";
+        }
     }
-}
-else{
+} else {
     echo "database exists <br/>";
     $table = "SELECT * FROM election";
-    $chacktable = mysql_query($table);
-    if(!$chacktable){
-        $createTable ="CREATE TABLE election(
+    $chacktable = mysqli_query($con, $table);
+    if (!$chacktable) {
+        $createTable = "CREATE TABLE election (
             id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
             img varchar(255) NOT NULL,
             text varchar(255) NOT NULL,
-            votes INT(10) NOT NULL,
+            votes INT(10) NOT NULL
             )";
-            $ok = mysql_query($createTable)
-            if(!$ok) {
-                echo "table creation error";
-            }
-            else {
-                echo "table created";
-            }
-    }
-    else {
+        $ok = mysqli_query($con, $createTable);
+        if (!$ok) {
+            echo "table creation error";
+        } else {
+            echo "table created";
+        }
+    } else {
         echo "table exist";
     }
 }
