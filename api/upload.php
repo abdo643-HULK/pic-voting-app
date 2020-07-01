@@ -4,6 +4,7 @@ include "./config.php";
 $text = $_POST["text"];
 $img = $_FILES['bild']['name'];
 $votes = 0;
+$dir = "../images"
 $tmpName = $_FILES['bild']['tmp_name'];
 $finfo = new finfo(FILEINFO_MIME_TYPE);
 $ext = array_search(
@@ -17,6 +18,9 @@ $ext = array_search(
 	),
 	true
 );
+if ( !file_exists( $dir ) && !is_dir( $dir ) ) {
+    mkdir( $dir );       
+} 
 $imagePath = sprintf('../images/%s.%s', sha1_file($tmpName), $ext);
 move_uploaded_file($tmpName, $imagePath);
 $sql = "INSERT INTO election (img,text,votes) VALUES('$imagePath','$text','$votes')";
